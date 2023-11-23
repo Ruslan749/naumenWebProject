@@ -23,15 +23,16 @@ public class OrderItemService {
     }
 
     public void createOrderItem(OrderItemDto orderItemDto) {
-        OrderItem orderItem = this.orderItemMapper.dtoToOrderItem(orderItemDto);
-        this.orderItemRepository.save(orderItem);
+        OrderItem orderItem = orderItemMapper.dtoToOrderItem(orderItemDto);
+        orderItemRepository.save(orderItem);
     }
 
-    public void deleteOrderItem(Long orderItemId) {
-        if (!this.orderItemRepository.existsById(orderItemId)) {
-            throw new OrderItemNotFoundException("OrderItem with ID " + orderItemId + " not found");
+    public OrderItemDto getOrderItem(Long orderItemId) {
+        Optional<OrderItem> optionalOrderItem = orderItemRepository.findById(orderItemId);
+        if (optionalOrderItem.isPresent()) {
+            return orderItemMapper.orderItemToDto(optionalOrderItem.get());
         } else {
-            this.orderItemRepository.deleteById(orderItemId);
+            throw new OrderItemNotFoundException("OrderItem with ID " + orderItemId + " not found");
         }
     }
 
@@ -40,22 +41,13 @@ public class OrderItemService {
         return orderItems.stream().map(orderItemMapper::orderItemToDto).collect(Collectors.toList());
     }
 
-    public OrderItemDto getOrderItem(Long orderItemId) {
-        Optional<OrderItem> optionalOrderItem = this.orderItemRepository.findById(orderItemId);
-        if (optionalOrderItem.isPresent()) {
-            return this.orderItemMapper.orderItemToDto(optionalOrderItem.get());
-        } else {
-            throw new OrderItemNotFoundException("OrderItem with ID " + orderItemId + " not found");
-        }
-    }
-
     public void markOrderAsExpired(Long orderItemId) {
-        OrderItem orderItem = (OrderItem)this.orderItemRepository.findById(orderItemId).orElseThrow(() -> {
+        OrderItem orderItem = orderItemRepository.findById(orderItemId).orElseThrow(() -> {
             return new OrderItemNotFoundException("OrderItem not found");
         });
         if (LocalDateTime.now().isAfter(orderItem.getExpireTime())) {
             orderItem.setExpired(true);
-            this.orderItemRepository.save(orderItem);
+            orderItemRepository.save(orderItem);
         }
 
     }

@@ -22,33 +22,33 @@ public class CarService {
     }
 
     public void createCar(CarDto carDto) {
-        Car car = this.carMapper.dtoToCar(carDto);
-        this.carRepository.save(car);
+        Car car = carMapper.dtoToCar(carDto);
+        carRepository.save(car);
     }
 
     public void deleteCar(Long carId) {
-        if (!this.carRepository.existsById(carId)) {
+        if (!carRepository.existsById(carId)) {
             throw new CarNotFoundException("Car with ID " + carId + " not found");
         } else {
-            this.carRepository.deleteById(carId);
+            carRepository.deleteById(carId);
         }
     }
 
     public void updateCar(Long carId, CarDto carDto) {
-        Optional<Car> optionalCar = this.carRepository.findById(carId);
+        Optional<Car> optionalCar = carRepository.findById(carId);
         if (optionalCar.isPresent()) {
-            Car existingCar = (Car)optionalCar.get();
-            this.carMapper.dtoToCar(carDto);
-            this.carRepository.save(existingCar);
+            Car existingCar = optionalCar.get();
+            carMapper.dtoToCar(carDto);
+            carRepository.save(existingCar);
         } else {
             throw new CarNotFoundException("Car with ID " + carId + " not found");
         }
     }
 
     public CarDto getCar(Long carId) {
-        Optional<Car> optionalCar = this.carRepository.findById(carId);
+        Optional<Car> optionalCar = carRepository.findById(carId);
         if (optionalCar.isPresent()) {
-            return this.carMapper.carToDto((Car)optionalCar.get());
+            return carMapper.carToDto((Car)optionalCar.get());
         } else {
             throw new CarNotFoundException("Car with ID " + carId + " not found");
         }

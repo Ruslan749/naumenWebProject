@@ -9,8 +9,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @EnableAsync
 public class NaumenWebProjectApplication {
-	public NaumenWebProjectApplication() {
-	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(NaumenWebProjectApplication.class, args);

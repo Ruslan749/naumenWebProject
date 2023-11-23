@@ -25,13 +25,13 @@ public class CarController {
 
     @GetMapping({"/{carId}"})
     public ResponseEntity<CarDto> getCar(@PathVariable Long carId) {
-        CarDto carDto = this.carService.getCar(carId);
+        CarDto carDto = carService.getCar(carId);
         return new ResponseEntity<>(carDto, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<CarDto>> getAllCars() {
-        List<CarDto> carDtos = this.carService.getAllCars();
+        List<CarDto> carDtos = carService.getAllCars();
         return new ResponseEntity<>(carDtos, HttpStatus.OK);
     }
 

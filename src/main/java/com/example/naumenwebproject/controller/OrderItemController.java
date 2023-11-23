@@ -13,7 +13,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping({"/api/order-item"})
+@RequestMapping({"/api/order-items"})
 public class OrderItemController {
     private final OrderItemService orderItemService;
 
@@ -23,14 +23,8 @@ public class OrderItemController {
 
     @PostMapping
     public ResponseEntity<Void> createOrderItem(@RequestBody OrderItemDto orderItemDto) {
-        this.orderItemService.createOrderItem(orderItemDto);
+        orderItemService.createOrderItem(orderItemDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    @DeleteMapping({"/{orderItemId}"})
-    public ResponseEntity<Void> deleteOrderItem(@PathVariable Long orderItemId) {
-        this.orderItemService.deleteOrderItem(orderItemId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping
@@ -41,13 +35,15 @@ public class OrderItemController {
 
     @GetMapping({"/{orderItemId}"})
     public ResponseEntity<OrderItemDto> getOrderItem(@PathVariable Long orderItemId) {
-        OrderItemDto orderItemDto = this.orderItemService.getOrderItem(orderItemId);
+        OrderItemDto orderItemDto = orderItemService.getOrderItem(orderItemId);
         return new ResponseEntity<>(orderItemDto, HttpStatus.OK);
     }
 
     @Async
     @Scheduled(fixedRate = 60000)
     public void checkForExpiredOrders() {
+        log.info("Checking for expired orders...");
+
         List<OrderItemDto> orderItems = orderItemService.getAllOrderItems();
 
         for (OrderItemDto orderItem : orderItems) {
