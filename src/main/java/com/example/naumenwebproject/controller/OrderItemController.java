@@ -1,6 +1,7 @@
 package com.example.naumenwebproject.controller;
 
 import com.example.naumenwebproject.dto.OrderItemDto;
+import com.example.naumenwebproject.exception.OrderItemNotFoundException;
 import com.example.naumenwebproject.service.OrderItemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -33,10 +34,14 @@ public class OrderItemController {
         return new ResponseEntity<>(orderItems, HttpStatus.OK);
     }
 
-    @GetMapping({"/{orderItemId}"})
+    @GetMapping("/{orderItemId}")
     public ResponseEntity<OrderItemDto> getOrderItem(@PathVariable Long orderItemId) {
-        OrderItemDto orderItemDto = orderItemService.getOrderItem(orderItemId);
-        return new ResponseEntity<>(orderItemDto, HttpStatus.OK);
+        try {
+            OrderItemDto orderItemDto = orderItemService.getOrderItem(orderItemId);
+            return ResponseEntity.ok(orderItemDto);
+        } catch (OrderItemNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @Async

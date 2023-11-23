@@ -1,6 +1,7 @@
 package com.example.naumenwebproject.controller;
 
 import com.example.naumenwebproject.dto.CarDto;
+import com.example.naumenwebproject.exception.CarNotFoundException;
 import com.example.naumenwebproject.service.CarService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,31 +20,43 @@ public class CarController {
 
     @PostMapping
     public ResponseEntity<Void> createCar(@RequestBody CarDto carDto) {
-        this.carService.createCar(carDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        carService.createCar(carDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping({"/{carId}"})
+    @GetMapping("/{carId}")
     public ResponseEntity<CarDto> getCar(@PathVariable Long carId) {
-        CarDto carDto = carService.getCar(carId);
-        return new ResponseEntity<>(carDto, HttpStatus.OK);
+        try {
+            CarDto carDto = carService.getCar(carId);
+            return ResponseEntity.ok(carDto);
+        } catch (CarNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping
     public ResponseEntity<List<CarDto>> getAllCars() {
         List<CarDto> carDtos = carService.getAllCars();
-        return new ResponseEntity<>(carDtos, HttpStatus.OK);
+        return ResponseEntity.ok(carDtos);
     }
 
-    @PutMapping({"/{carId}"})
+    @PutMapping("/{carId}")
     public ResponseEntity<Void> updateCar(@PathVariable Long carId, @RequestBody CarDto carDto) {
-        this.carService.updateCar(carId, carDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            carService.updateCar(carId, carDto);
+            return ResponseEntity.ok().build();
+        } catch (CarNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @DeleteMapping({"/{carId}"})
+    @DeleteMapping("/{carId}")
     public ResponseEntity<Void> deleteCar(@PathVariable Long carId) {
-        this.carService.deleteCar(carId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        try {
+            carService.deleteCar(carId);
+            return ResponseEntity.noContent().build();
+        } catch (CarNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

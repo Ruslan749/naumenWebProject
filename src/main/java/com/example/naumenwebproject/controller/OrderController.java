@@ -1,9 +1,13 @@
 package com.example.naumenwebproject.controller;
 
+import com.example.naumenwebproject.dto.OrderDto;
+import com.example.naumenwebproject.exception.OrderItemNotFoundException;
 import com.example.naumenwebproject.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -13,6 +17,22 @@ public class OrderController {
 
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
+    }
+
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderDto> getOrder(@RequestParam Long orderId) {
+        try {
+            OrderDto orderDto = orderService.getOrder(orderId);
+            return ResponseEntity.ok(orderDto);
+        } catch (OrderItemNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<OrderDto>> getAllOrders() {
+        List<OrderDto> orderDtos = orderService.getAllOrders();
+        return ResponseEntity.ok(orderDtos);
     }
 
     @PostMapping

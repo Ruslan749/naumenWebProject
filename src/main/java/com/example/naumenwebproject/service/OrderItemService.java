@@ -42,9 +42,7 @@ public class OrderItemService {
     }
 
     public void markOrderAsExpired(Long orderItemId) {
-        OrderItem orderItem = orderItemRepository.findById(orderItemId).orElseThrow(() -> {
-            return new OrderItemNotFoundException("OrderItem not found");
-        });
+        OrderItem orderItem = orderItemRepository.findById(orderItemId).orElseThrow(() -> new OrderItemNotFoundException("OrderItem not found"));
         if (LocalDateTime.now().isAfter(orderItem.getExpireTime())) {
             orderItem.setExpired(true);
             orderItemRepository.save(orderItem);

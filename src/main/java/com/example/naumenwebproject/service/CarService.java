@@ -48,7 +48,7 @@ public class CarService {
     public CarDto getCar(Long carId) {
         Optional<Car> optionalCar = carRepository.findById(carId);
         if (optionalCar.isPresent()) {
-            return carMapper.carToDto((Car)optionalCar.get());
+            return carMapper.carToDto(optionalCar.get());
         } else {
             throw new CarNotFoundException("Car with ID " + carId + " not found");
         }
