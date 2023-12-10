@@ -13,7 +13,6 @@ public class CarMapper {
         carDto.setManufactureYear(car.getManufactureYear());
         carDto.setImage(car.getImage());
         carDto.setPrice(car.getPrice());
-        carDto.setReady(car.getReady());
         return carDto;
     }
 
@@ -24,7 +23,6 @@ public class CarMapper {
         car.setManufactureYear(carDto.getManufactureYear());
         car.setImage(carDto.getImage());
         car.setPrice(carDto.getPrice());
-        car.setReady(carDto.getReady());
         return car;
     }
 }

@@ -1,6 +1,8 @@
 package com.example.naumenwebproject.model;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,9 +18,6 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "car_id")
     private Car car;
-
-    @Column(name = "quantity")
-    private Integer quantity;
 
     @ManyToOne
     @JoinColumn(name = "order_id")

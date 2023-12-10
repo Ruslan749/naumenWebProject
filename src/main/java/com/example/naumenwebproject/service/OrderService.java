@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -31,6 +30,7 @@ public class OrderService {
         Order order = new Order();
         order.setPaid(false);
         order.setDate(LocalDateTime.now());
+        order.setActive(true);
 
         orderRepository.save(order);
     }
@@ -46,18 +46,16 @@ public class OrderService {
 
     public List<OrderDto> getAllOrders() {
         List<Order> orders = orderRepository.findAll();
-        return orders.stream().map(orderMapper::orderToDto).collect(Collectors.toList());
+        return orderMapper.orderToDtoList(orders);
     }
 
-    public void addOrderItemToOrder(Long orderId, Long orderItemId) {
-        Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
-
-        OrderItem orderItem = orderItemRepository.findById(orderItemId)
-                .orElseThrow(() -> new OrderItemNotFoundException("OrderItem with ID " + orderItemId + " not found"));
-
-        order.getOrderItems().add(orderItem);
-
-        orderRepository.save(order);
+    public void deleteOrder(Long orderId) {
+        if (!orderRepository.existsById(orderId)) {
+            throw new OrderItemNotFoundException("Order with ID " + orderId + " not found");
+        } else {
+            orderRepository.deleteById(orderId);
+        }
+        orderRepository.deleteById(orderId);
     }
 
     public void deleteOrderItemFromOrder(Long orderId, Long orderItemId) {
@@ -73,24 +71,41 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public void markOrderAsPaid(Long orderId)   {
-        Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
-        order.setPaid(true);
+    public void setOrderItemToOrder(Long orderId, Long orderItemId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException("Order not found"));
+
+        OrderItem orderItem = orderItemRepository.findById(orderItemId)
+                .orElseThrow(() -> new OrderItemNotFoundException("OrderItem with ID " + orderItemId + " not found"));
+
+        orderItem.setOrder(order);
+
         orderRepository.save(order);
     }
 
-    public void deleteOrder(Long orderId) {
-        if (!orderRepository.existsById(orderId)) {
-            throw new OrderItemNotFoundException("Order with ID " + orderId + " not found");
-        } else {
-            orderRepository.deleteById(orderId);
-        }
-        orderRepository.deleteById(orderId);
+    public void setOrderIsPaid(Long orderId)   {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
+        order.setPaid(true);
+
+        orderRepository.save(order);
     }
 
     public Boolean checkOrderIsPaid(Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
         return order.getPaid();
     }
+
+    public void setOrderIsNotActive(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
+        order.setActive(false);
+
+        orderRepository.save(order);
+    }
+
+    public Boolean checkOrderIsActive(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
+        return order.getActive();
+    }
+
 
 }

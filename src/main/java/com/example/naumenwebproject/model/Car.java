@@ -29,6 +29,5 @@ public class Car {
     @Column(name = "price")
     private BigDecimal price;
 
-    @Column(name = "ready")
-    private Boolean ready;
+    // deleted flag на рассмотрение
 }

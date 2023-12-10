@@ -38,15 +38,14 @@ public class OrderItemService {
 
     public List<OrderItemDto> getAllOrderItems() {
         List<OrderItem> orderItems = orderItemRepository.findAll();
-        return orderItems.stream().map(orderItemMapper::orderItemToDto).collect(Collectors.toList());
+        return orderItemMapper.orderItemsToDtoList(orderItems);
     }
 
-    public void markOrderAsExpired(Long orderItemId) {
+    public void setOrderItemIsExpired(Long orderItemId) {
         OrderItem orderItem = orderItemRepository.findById(orderItemId).orElseThrow(() -> new OrderItemNotFoundException("OrderItem not found"));
         if (LocalDateTime.now().isAfter(orderItem.getExpireTime())) {
             orderItem.setExpired(true);
             orderItemRepository.save(orderItem);
         }
-
     }
 }

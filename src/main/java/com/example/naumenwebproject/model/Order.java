@@ -1,9 +1,13 @@
 package com.example.naumenwebproject.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -14,8 +18,8 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "order")
-    List<OrderItem> orderItems;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<OrderItem> orderItems = new ArrayList<>();
 
     @Column(name = "date_order")
     private LocalDateTime date;
@@ -23,4 +27,6 @@ public class Order {
     @Column(name = "paid")
     private Boolean paid;
 
+    @Column(name = "active")
+    private Boolean active;
 }
