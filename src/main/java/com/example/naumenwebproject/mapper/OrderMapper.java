@@ -1,11 +1,10 @@
 package com.example.naumenwebproject.mapper;
 
 import com.example.naumenwebproject.dto.OrderDto;
-import com.example.naumenwebproject.dto.OrderItemDto;
 import com.example.naumenwebproject.model.Order;
-import com.example.naumenwebproject.model.OrderItem;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,10 +19,11 @@ public class OrderMapper {
     public OrderDto orderToDto(Order order) {
         OrderDto orderDto = new OrderDto();
         orderDto.setId(order.getId());
-        orderDto.setDate(order.getDate());
-        orderDto.setPaid(order.getPaid());
-        orderDto.setActive(order.getActive());
+        orderDto.setDate(LocalDateTime.now());
+        orderDto.setPaid(false);
+        orderDto.setActive(true);
         orderDto.setOrderItems(orderItemMapper.orderItemsToDtoList(order.getOrderItems()));
+        orderDto.setPerson(order.getPerson());
 
         return orderDto;
     }

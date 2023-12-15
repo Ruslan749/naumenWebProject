@@ -19,20 +19,25 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final OrderMapper orderMapper;
+    private final PersonService personService;
 
-    public OrderService(OrderRepository orderRepository, OrderItemRepository orderItemRepository, OrderMapper orderMapper) {
+    public OrderService(OrderRepository orderRepository,
+                        OrderItemRepository orderItemRepository, OrderMapper orderMapper, PersonService personService) {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.orderMapper = orderMapper;
+        this.personService = personService;
     }
 
-    public void createOrder() {
+    public Order createOrder() {
         Order order = new Order();
         order.setPaid(false);
         order.setDate(LocalDateTime.now());
         order.setActive(true);
 
         orderRepository.save(order);
+
+        return order;
     }
 
     public OrderDto getOrder(Long orderId) {
@@ -40,7 +45,7 @@ public class OrderService {
         if (optionalOrder.isPresent()) {
             return orderMapper.orderToDto(optionalOrder.get());
         } else {
-            throw new OrderItemNotFoundException("OrderItem with ID " + orderId + " not found");
+            throw new OrderItemNotFoundException("OrderItem not found");
         }
     }
 
@@ -51,7 +56,7 @@ public class OrderService {
 
     public void deleteOrder(Long orderId) {
         if (!orderRepository.existsById(orderId)) {
-            throw new OrderItemNotFoundException("Order with ID " + orderId + " not found");
+            throw new OrderItemNotFoundException("Order not found");
         } else {
             orderRepository.deleteById(orderId);
         }
@@ -64,7 +69,7 @@ public class OrderService {
         OrderItem orderItemToRemove = order.getOrderItems().stream()
                 .filter(item -> item.getId().equals(orderItemId))
                 .findFirst()
-                .orElseThrow(() -> new OrderItemNotFoundException("OrderItem with ID " + orderItemId + " not found in the Order"));
+                .orElseThrow(() -> new OrderItemNotFoundException("OrderItem not found in the Order"));
 
         order.getOrderItems().remove(orderItemToRemove);
 
@@ -83,6 +88,11 @@ public class OrderService {
         orderRepository.save(order);
     }
 
+    public Boolean checkOrderIsPaid(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
+        return order.getPaid();
+    }
+
     public void setOrderIsPaid(Long orderId)   {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
         order.setPaid(true);
@@ -90,11 +100,7 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public Boolean checkOrderIsPaid(Long orderId) {
-        Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
-        return order.getPaid();
-    }
-
+    // Возможно не нужен
     public void setOrderIsNotActive(Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
         order.setActive(false);
@@ -102,10 +108,33 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public Boolean checkOrderIsActive(Long orderId) {
+    // Возможно не нужен
+    public Boolean checkActiveOrder(Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
         return order.getActive();
     }
 
+    public Boolean checkUnpaidOrder() {
+        String username = personService.getUsername();
+
+        Order unpaidOrder = orderRepository.findByPaidFalseAndPersonUsername(username);
+
+        return unpaidOrder != null;
+    }
+
+    public void updateOrderAsNotActive() {
+        List<Order> orders = orderRepository.findByActiveTrueAndPaidTrue();
+
+        for (Order order : orders) {
+            boolean allOrderItemsExpired = order.getOrderItems().stream()
+                    .allMatch(OrderItem::isExpired);
+
+            if (allOrderItemsExpired) {
+                order.setActive(false);
+
+                orderRepository.save(order);
+            }
+        }
+    }
 
 }

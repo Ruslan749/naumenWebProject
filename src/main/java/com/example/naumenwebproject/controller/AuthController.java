@@ -1,8 +1,8 @@
 package com.example.naumenwebproject.controller;
 
 
-import com.example.naumenwebproject.modals.Person;
-import com.example.naumenwebproject.service.RegistrationServes;
+import com.example.naumenwebproject.model.Person;
+import com.example.naumenwebproject.service.RegistrationService;
 import com.example.naumenwebproject.utill.PersonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,17 +13,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
-import java.util.Arrays;
 
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
     private final PersonValidator personValidator;
-    private final RegistrationServes registrationServes;
+    private final RegistrationService registrationService;
     @Autowired
-    public AuthController(PersonValidator personValidator, RegistrationServes registrationServes) {
+    public AuthController(PersonValidator personValidator, RegistrationService registrationService) {
         this.personValidator = personValidator;
-        this.registrationServes = registrationServes;
+        this.registrationService = registrationService;
     }
 
     // метод для регистрации
@@ -47,7 +46,7 @@ public class AuthController {
             return "redirect:/auth/registration";
 
         }
-        registrationServes.register(person);
+        registrationService.register(person);
         return "redirect:/auth/login";
 
     }

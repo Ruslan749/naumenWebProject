@@ -29,5 +29,8 @@ public class Car {
     @Column(name = "price")
     private BigDecimal price;
 
+    @OneToOne(mappedBy = "car")
+    private OrderItem orderItem;
+
     // deleted flag на рассмотрение
 }

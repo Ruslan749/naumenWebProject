@@ -10,5 +10,6 @@ import java.time.LocalDateTime;
 public class OrderItemDto {
     private Long id;
     private LocalDateTime expireTime;
-    private Boolean expired;
+    private Integer quantity;
+
 }

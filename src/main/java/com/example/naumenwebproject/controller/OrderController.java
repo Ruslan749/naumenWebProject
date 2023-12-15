@@ -3,17 +3,21 @@ package com.example.naumenwebproject.controller;
 import com.example.naumenwebproject.dto.OrderDto;
 import com.example.naumenwebproject.exception.OrderItemNotFoundException;
 import com.example.naumenwebproject.exception.OrderNotFoundException;
+import com.example.naumenwebproject.model.Order;
 import com.example.naumenwebproject.service.OrderService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
-
     private final OrderService orderService;
 
     public OrderController(OrderService orderService) {
@@ -21,9 +25,9 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createOrder() {
-        orderService.createOrder();
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<Order> createOrder() {
+        Order order = orderService.createOrder();
+        return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
 
     @GetMapping("/{orderId}")
@@ -95,6 +99,20 @@ public class OrderController {
         } catch (OrderNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/check-unpaid")
+    public ResponseEntity<Boolean> checkUnpaidOrder() {
+        Boolean hasUnpaidOrder = orderService.checkUnpaidOrder();
+        return ResponseEntity.ok(hasUnpaidOrder);
+    }
+
+    @Async
+    @Scheduled(fixedDelay = 5 * 60 * 1000)
+    @PostMapping("/update-not-active")
+    public void updateOrderAsNotActive() {
+        log.info("Checking");
+        orderService.updateOrderAsNotActive();
     }
 
 }

@@ -1,9 +1,6 @@
 package com.example.naumenwebproject.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -27,6 +24,11 @@ public class Order {
     @Column(name = "paid")
     private Boolean paid;
 
+    // нужно для уменьшения запросов БД при проверке всех машин на "просроченность"
     @Column(name = "active")
     private Boolean active;
+
+    @ManyToOne
+    @JoinColumn(name = "person_id")
+    private Person person;
 }

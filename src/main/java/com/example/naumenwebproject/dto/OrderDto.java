@@ -1,5 +1,6 @@
 package com.example.naumenwebproject.dto;
 
+import com.example.naumenwebproject.model.Person;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,5 +15,6 @@ public class OrderDto {
     private Boolean paid;
     private LocalDateTime date;
     private Boolean active;
+    private Person person;
 
 }

@@ -1,5 +1,6 @@
-package com.example.naumenwebproject.modals;
+package com.example.naumenwebproject.model;
 
+import com.example.naumenwebproject.model.Order;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,10 +8,12 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "Person")
 public class Person {
     @Id
@@ -32,6 +35,9 @@ public class Person {
 
     @Column(name = "role")
     private String roles;
+
+    @OneToMany(mappedBy = "person")
+    private List<Order> orders;
 
     public Person(String username, String phone) {
         this.username = username;

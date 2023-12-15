@@ -18,14 +18,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public SecurityConfig(PersonDetailsService personDetailsService) {
         this.personDetailsService = personDetailsService;
     }
-    // говорим спринг исмпользовать собственую странцу аутентификации
+        // говорим спринг исмпользовать собственую странцу аутентификации
     @Override
     protected void configure(HttpSecurity http)throws Exception{
         //конфигурируем сам spring security (вход, ошибки и т.д)
         // конфигурируем авторизацию
 
         http.authorizeRequests() // включаем настройки для авторизтрованых и не авторизированых пользователей
-                .antMatchers("/admin").hasRole("ADMIN")// на страницу админа ьожет попасть только админ
+                .antMatchers("/admin").hasRole("ADMIN")// на страницу админа может попасть только админ
                 .antMatchers("/auth/login","/auth/registration", "/error").permitAll() // пускать всех не авторизированых пользователей на эти страницы
                 .anyRequest().hasAnyRole("USER","ADMIN")
                 .and() // заканчиваем настройку авторизации
@@ -36,7 +36,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().logoutUrl("/logout") //если человек проходит по этому адресу то он разлогиниваеться и стераютться все кукис
                 .logoutSuccessUrl("/auth/login"); // при разлогировании он переходит по этому пути
-
     }
 
     // настраивает аутентификацию

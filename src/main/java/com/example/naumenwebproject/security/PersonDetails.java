@@ -1,7 +1,8 @@
 package com.example.naumenwebproject.security;
 
 
-import com.example.naumenwebproject.modals.Person;
+import com.example.naumenwebproject.model.Person;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,8 +10,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
+@Getter
 public class PersonDetails implements UserDetails { // UserDetails -- интерфейс для spring security
 
+    // нужно для получение данных аутентицифицированого пользователя
     private final Person person;
 
     public PersonDetails(Person person) {
@@ -52,10 +55,6 @@ public class PersonDetails implements UserDetails { // UserDetails -- интер
     @Override
     public boolean isEnabled() {
         return true;
-    }
-    // нужно для получение данных аутентицифицированого пользователя
-    public Person getPerson(){
-        return this.person;
     }
 
 }

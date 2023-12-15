@@ -13,7 +13,8 @@ public class OrderItemMapper {
         OrderItemDto orderItemDto = new OrderItemDto();
         orderItemDto.setId(orderItem.getId());
         orderItemDto.setExpireTime(orderItem.getExpireTime());
-        orderItemDto.setExpired(orderItem.getExpired());
+        orderItemDto.setQuantity(orderItem.getQuantity());
+
         return orderItemDto;
     }
 
@@ -21,7 +22,8 @@ public class OrderItemMapper {
         OrderItem orderItem = new OrderItem();
         orderItem.setId(orderItemDto.getId());
         orderItem.setExpireTime(orderItemDto.getExpireTime());
-        orderItem.setExpired(orderItemDto.getExpired());
+        orderItem.setQuantity(orderItemDto.getQuantity());
+
         return orderItem;
     }
 

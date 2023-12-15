@@ -1,7 +1,7 @@
 package com.example.naumenwebproject.utill;
 
 
-import com.example.naumenwebproject.modals.Person;
+import com.example.naumenwebproject.model.Person;
 import com.example.naumenwebproject.service.PersonDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
