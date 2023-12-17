@@ -1,6 +1,5 @@
 package com.example.naumenwebproject.config;
 
-
 import com.example.naumenwebproject.service.PersonDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

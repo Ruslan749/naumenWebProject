@@ -8,11 +8,13 @@ import org.springframework.stereotype.Component;
 public class CarMapper {
     public CarDto carToDto(Car car) {
         CarDto carDto = new CarDto();
+        carDto.setId(car.getId());
         carDto.setModel(car.getModel());
         carDto.setBrand(car.getBrand());
         carDto.setManufactureYear(car.getManufactureYear());
         carDto.setImage(car.getImage());
         carDto.setPrice(car.getPrice());
+
         return carDto;
     }
 
@@ -23,6 +25,7 @@ public class CarMapper {
         car.setManufactureYear(carDto.getManufactureYear());
         car.setImage(carDto.getImage());
         car.setPrice(carDto.getPrice());
+
         return car;
     }
 }

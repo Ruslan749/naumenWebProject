@@ -1,10 +1,10 @@
 package com.example.naumenwebproject.model;
 
 import lombok.Data;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Entity
@@ -29,8 +29,8 @@ public class Car {
     @Column(name = "price")
     private BigDecimal price;
 
-    @OneToOne(mappedBy = "car")
-    private OrderItem orderItem;
+    @OneToMany(mappedBy = "car")
+    private List<OrderItem> orderItems;
 
     // deleted flag на рассмотрение
 }
