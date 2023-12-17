@@ -29,6 +29,15 @@ public class OrderItemService {
         return orderItem;
     }
 
+    public void deleteOrderItem(Long orderItemId) {
+        if (!orderItemRepository.existsById(orderItemId)) {
+            throw new OrderItemNotFoundException("Order not found");
+        } else {
+            orderItemRepository.deleteById(orderItemId);
+        }
+        orderItemRepository.deleteById(orderItemId);
+    }
+
     public OrderItemDto getOrderItem(Long orderItemId) {
         Optional<OrderItem> optionalOrderItem = orderItemRepository.findById(orderItemId);
         if (optionalOrderItem.isPresent()) {

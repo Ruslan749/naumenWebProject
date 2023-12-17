@@ -56,7 +56,7 @@ public class OrderService {
 
     public void deleteOrder(Long orderId) {
         if (!orderRepository.existsById(orderId)) {
-            throw new OrderItemNotFoundException("Order not found");
+            throw new OrderNotFoundException("Order not found");
         } else {
             orderRepository.deleteById(orderId);
         }

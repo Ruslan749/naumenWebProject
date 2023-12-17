@@ -1,6 +1,5 @@
 package com.example.naumenwebproject.controller;
 
-
 import com.example.naumenwebproject.model.Person;
 import com.example.naumenwebproject.service.RegistrationService;
 import com.example.naumenwebproject.utill.PersonValidator;

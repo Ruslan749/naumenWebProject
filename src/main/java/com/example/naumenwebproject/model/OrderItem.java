@@ -13,17 +13,13 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "car_id")
     private Car car;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
-
-    @ManyToOne
-    @JoinColumn(name = "order_item_id")
-    private OrderItem orderItem;
 
     @Column(name = "quantity")
     private Integer quantity;
