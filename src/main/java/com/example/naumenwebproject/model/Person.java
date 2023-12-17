@@ -36,7 +36,7 @@ public class Person {
     @Column(name = "role")
     private String roles;
 
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER)
     private List<Order> orders;
 
     public Person(String username, String phone) {

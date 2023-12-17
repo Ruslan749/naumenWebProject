@@ -13,5 +13,4 @@ public class OrderDto {
     private Boolean paid;
     private LocalDateTime date;
     private Boolean active;
-    private Person person;
 }

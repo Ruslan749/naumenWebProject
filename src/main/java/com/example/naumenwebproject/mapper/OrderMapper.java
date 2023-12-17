@@ -26,8 +26,6 @@ public class OrderMapper {
         orderDto.setDate(LocalDateTime.now());
         orderDto.setPaid(false);
         orderDto.setActive(true);
-        orderDto.setOrderItems(orderItemMapper.orderItemsToDtoList(order.getOrderItems()));
-        orderDto.setPerson(personService.getCurrentPerson());
 
         return orderDto;
     }

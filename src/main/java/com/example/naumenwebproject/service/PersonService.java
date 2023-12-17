@@ -1,6 +1,7 @@
 package com.example.naumenwebproject.service;
 
 import com.example.naumenwebproject.model.Person;
+import com.example.naumenwebproject.repository.PeopleRepository;
 import com.example.naumenwebproject.security.PersonDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +19,11 @@ public class PersonService {
     public Person getCurrentPerson() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        return (Person) authentication.getPrincipal();
+        if (authentication != null && authentication.getPrincipal() instanceof PersonDetails personDetails) {
+            return personDetails.getPerson();
+        }
+
+        return null;
     }
+
 }

@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -27,7 +28,7 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<Order> createOrder() {
         Order order = orderService.createOrder();
-        return new ResponseEntity<>(order, HttpStatus.CREATED);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{orderId}")
@@ -114,6 +115,5 @@ public class OrderController {
         log.info("Checking");
         orderService.updateOrderAsNotActive();
     }
-
 }
 

@@ -34,6 +34,7 @@ public class OrderService {
         order.setPaid(false);
         order.setDate(LocalDateTime.now());
         order.setActive(true);
+        order.setPerson(personService.getCurrentPerson());
 
         orderRepository.save(order);
 
