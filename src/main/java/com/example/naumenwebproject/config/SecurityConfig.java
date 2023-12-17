@@ -23,6 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //конфигурируем сам spring security (вход, ошибки и т.д)
         // конфигурируем авторизацию
 
+
         http.csrf().disable() // отключаем защиту от меж сайтовой потделки запросов
                 .authorizeRequests() // включаем настройки для авторизтрованых и не авторизированых пользователей
                 .antMatchers("/admin").hasRole("ADMIN")// на страницу админа может попасть только админ
