@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/cars")
 public class CarController {
     private final CarService carService;
 
@@ -17,13 +18,13 @@ public class CarController {
         this.carService = carService;
     }
 
-    @PostMapping("/api/cars")
+    @PostMapping
     public ResponseEntity<Void> createCar(@RequestBody CarDto carDto) {
         carService.createCar(carDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("getCar/{carId}")
+    @GetMapping("/{carId}")
     public ResponseEntity<CarDto> getCar(@PathVariable Long carId) {
         try {
             CarDto carDto = carService.getCar(carId);
@@ -33,13 +34,13 @@ public class CarController {
         }
     }
 
-    @GetMapping("/api/cars")
+    @GetMapping
     public ResponseEntity<List<CarDto>> getAllCars() {
         List<CarDto> carDtos = carService.getAllCars();
         return ResponseEntity.ok(carDtos);
     }
 
-    @PutMapping("getCar/{carId}")
+    @PutMapping("/{carId}")
     public ResponseEntity<Void> updateCar(@PathVariable Long carId, @RequestBody CarDto carDto) {
         try {
             carService.updateCar(carId, carDto);
@@ -49,7 +50,7 @@ public class CarController {
         }
     }
 
-    @DeleteMapping("getCar/{carId}")
+    @DeleteMapping("/{carId}")
     public ResponseEntity<Void> deleteCar(@PathVariable Long carId) {
         try {
             carService.deleteCar(carId);

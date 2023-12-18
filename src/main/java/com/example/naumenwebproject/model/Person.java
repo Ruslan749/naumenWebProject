@@ -19,7 +19,7 @@ public class Person {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @NotEmpty(message = "имя не должно быть пустым")
     @Size(min = 2,max = 100,message = "имя должно быть от 2 до 100 символов")

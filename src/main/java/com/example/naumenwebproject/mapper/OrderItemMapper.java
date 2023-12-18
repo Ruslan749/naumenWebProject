@@ -24,8 +24,7 @@ public class OrderItemMapper {
         orderItemDto.setId(orderItem.getId());
         orderItemDto.setExpireTime(orderItem.getExpireTime());
         orderItemDto.setQuantity(orderItem.getQuantity());
-        orderItemDto.setCar(carMapper.carToDto(orderItem.getCar()));
-
+        orderItemDto.setCarDto(carMapper.carToDto(orderItem.getCar()));
 
         return orderItemDto;
     }
@@ -35,7 +34,7 @@ public class OrderItemMapper {
         orderItem.setExpireTime(orderItemDto.getExpireTime());
         orderItem.setQuantity(orderItemDto.getQuantity());
 
-        Car car = carRepository.findById(orderItemDto.getCar().getId())
+        Car car = carRepository.findById(orderItemDto.getCarDto().getId())
                 .orElseThrow(() -> new RuntimeException("Car not found"));
 
         orderItem.setCar(car);

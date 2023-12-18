@@ -16,7 +16,7 @@ public class Order {
     private Long id;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<OrderItem> orderItems = new ArrayList<>();
+    List<OrderItem> orderItems;
 
     @Column(name = "date_order")
     private LocalDateTime date;

@@ -2,7 +2,6 @@ package com.example.naumenwebproject.mapper;
 
 import com.example.naumenwebproject.dto.OrderDto;
 import com.example.naumenwebproject.model.Order;
-import com.example.naumenwebproject.service.PersonService;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -13,12 +12,13 @@ import java.util.stream.Collectors;
 public class OrderMapper {
     public final OrderItemMapper orderItemMapper;
 
-    private final PersonService personService;
+    private final PersonMapper personMapper;
 
-    public OrderMapper(OrderItemMapper orderItemMapper, PersonService personService) {
+    public OrderMapper(OrderItemMapper orderItemMapper, PersonMapper personMapper) {
         this.orderItemMapper = orderItemMapper;
-        this.personService = personService;
+        this.personMapper = personMapper;
     }
+
 
     public OrderDto orderToDto(Order order) {
         OrderDto orderDto = new OrderDto();
@@ -26,6 +26,8 @@ public class OrderMapper {
         orderDto.setDate(LocalDateTime.now());
         orderDto.setPaid(false);
         orderDto.setActive(true);
+        orderDto.setPersonDto(personMapper.personToDto(order.getPerson()));
+        orderDto.setOrderItems(orderItemMapper.orderItemsToDtoList(order.getOrderItems()));
 
         return orderDto;
     }

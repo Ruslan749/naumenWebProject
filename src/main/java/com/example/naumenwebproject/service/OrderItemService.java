@@ -21,12 +21,10 @@ public class OrderItemService {
         this.orderItemMapper = orderItemMapper;
     }
 
-    public OrderItem createOrderItem(OrderItemDto orderItemDto) {
+    public void createOrderItem(OrderItemDto orderItemDto) {
         OrderItem orderItem = orderItemMapper.dtoToOrderItem(orderItemDto);
 
         orderItemRepository.save(orderItem);
-
-        return orderItem;
     }
 
     public void deleteOrderItem(Long orderItemId) {

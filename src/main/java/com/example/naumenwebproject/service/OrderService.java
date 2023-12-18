@@ -29,7 +29,7 @@ public class OrderService {
         this.personService = personService;
     }
 
-    public Order createOrder() {
+    public void createOrder() {
         Order order = new Order();
         order.setPaid(false);
         order.setDate(LocalDateTime.now());
@@ -37,8 +37,6 @@ public class OrderService {
         order.setPerson(personService.getCurrentPerson());
 
         orderRepository.save(order);
-
-        return order;
     }
 
     public OrderDto getOrder(Long orderId) {
@@ -46,7 +44,7 @@ public class OrderService {
         if (optionalOrder.isPresent()) {
             return orderMapper.orderToDto(optionalOrder.get());
         } else {
-            throw new OrderItemNotFoundException("OrderItem not found");
+            throw new OrderNotFoundException("OrderItem not found");
         }
     }
 
@@ -61,7 +59,6 @@ public class OrderService {
         } else {
             orderRepository.deleteById(orderId);
         }
-        orderRepository.deleteById(orderId);
     }
 
     public void deleteOrderItemFromOrder(Long orderId, Long orderItemId) {

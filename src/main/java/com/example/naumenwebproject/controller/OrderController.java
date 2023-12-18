@@ -13,7 +13,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -27,7 +26,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<Order> createOrder() {
-        Order order = orderService.createOrder();
+        orderService.createOrder();
         return ResponseEntity.ok().build();
     }
 
@@ -36,7 +35,7 @@ public class OrderController {
         try {
             OrderDto orderDto = orderService.getOrder(orderId);
             return ResponseEntity.ok(orderDto);
-        } catch (OrderItemNotFoundException e) {
+        } catch (OrderNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
@@ -76,7 +75,7 @@ public class OrderController {
         }
     }
 
-    @PutMapping("/{orderId}/add/{orderItemId}")
+    @PostMapping("/{orderId}/add/{orderItemId}")
     public ResponseEntity<String> setOrderItemToOrder(
             @PathVariable Long orderId,
             @PathVariable Long orderItemId

@@ -8,6 +8,6 @@ public class OrderItemDto {
     private Long id;
     private LocalDateTime expireTime;
     private Integer quantity;
-    private CarDto car;
+    private CarDto carDto;
 
 }

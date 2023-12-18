@@ -4,6 +4,7 @@ package com.example.naumenwebproject.config;
 import com.example.naumenwebproject.service.PersonDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable() // отключаем защиту от меж сайтовой потделки запросов
                 .authorizeRequests() // включаем настройки для авторизтрованых и не авторизированых пользователей
-                .antMatchers("/admin","/api/cars").hasRole("ADMIN")// на страницу админа может попасть только админ
+                .antMatchers(HttpMethod.GET, "/admin", "/api/cars").hasRole("ADMIN")// на страницу админа может попасть только админ
                 .antMatchers("/auth/login","/auth/registration", "/error").permitAll() // пускать всех не авторизированых пользователей на эти страницы
                 .anyRequest().hasAnyRole("USER","ADMIN")
                 .and() // заканчиваем настройку авторизации

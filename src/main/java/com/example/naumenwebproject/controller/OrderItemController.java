@@ -1,9 +1,7 @@
 package com.example.naumenwebproject.controller;
 
 import com.example.naumenwebproject.dto.OrderItemDto;
-import com.example.naumenwebproject.exception.CarNotFoundException;
 import com.example.naumenwebproject.exception.OrderItemNotFoundException;
-import com.example.naumenwebproject.exception.OrderNotFoundException;
 import com.example.naumenwebproject.model.OrderItem;
 import com.example.naumenwebproject.service.OrderItemService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +22,9 @@ public class OrderItemController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderItem> createOrderItem(@RequestBody OrderItemDto orderItemDto) {
-        OrderItem orderItem = orderItemService.createOrderItem(orderItemDto);
-        return new ResponseEntity<>(orderItem, HttpStatus.CREATED);
+    public ResponseEntity<OrderItemDto> createOrderItem(@RequestBody OrderItemDto orderItemDto) {
+        orderItemService.createOrderItem(orderItemDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/{carId}")
