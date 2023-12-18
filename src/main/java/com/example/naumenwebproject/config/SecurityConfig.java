@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable() // отключаем защиту от меж сайтовой потделки запросов
                 .authorizeRequests() // включаем настройки для авторизтрованых и не авторизированых пользователей
-                .antMatchers("/admin").hasRole("ADMIN")// на страницу админа может попасть только админ
+                .antMatchers("/admin","/api/cars").hasRole("ADMIN")// на страницу админа может попасть только админ
                 .antMatchers("/auth/login","/auth/registration", "/error").permitAll() // пускать всех не авторизированых пользователей на эти страницы
                 .anyRequest().hasAnyRole("USER","ADMIN")
                 .and() // заканчиваем настройку авторизации
