@@ -13,7 +13,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping({"/api/order-items"})
+@RequestMapping({"/api/orderItems"})
 public class OrderItemController {
     private final OrderItemService orderItemService;
 
@@ -21,13 +21,13 @@ public class OrderItemController {
         this.orderItemService = orderItemService;
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<OrderItemDto> createOrderItem(@RequestBody OrderItemDto orderItemDto) {
         orderItemService.createOrderItem(orderItemDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping("/{carId}")
+    @DeleteMapping("/delete/{carId}")
     public ResponseEntity<Void> deleteCar(@PathVariable Long carId) {
         try {
             orderItemService.deleteOrderItem(carId);
@@ -37,13 +37,13 @@ public class OrderItemController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     public ResponseEntity<List<OrderItemDto>> getAllOrderItems() {
         List<OrderItemDto> orderItems = orderItemService.getAllOrderItems();
         return new ResponseEntity<>(orderItems, HttpStatus.OK);
     }
 
-    @GetMapping("/{orderItemId}")
+    @GetMapping("/getOrderItem/{orderItemId}")
     public ResponseEntity<OrderItemDto> getOrderItem(@PathVariable Long orderItemId) {
         try {
             OrderItemDto orderItemDto = orderItemService.getOrderItem(orderItemId);
@@ -54,7 +54,7 @@ public class OrderItemController {
     }
 
     // Возможно не нужен
-    @PutMapping("/{orderItemId}/set-expire")
+    @PutMapping("/update/{orderItemId}/setExpire")
     public ResponseEntity<String> setOrderItemIsExpired(@PathVariable Long orderItemId) {
         try {
             orderItemService.setOrderItemIsExpired(orderItemId);

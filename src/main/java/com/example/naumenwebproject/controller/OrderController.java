@@ -24,13 +24,13 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Order> createOrder() {
         orderService.createOrder();
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{orderId}")
+    @GetMapping("/get/{orderId}")
     public ResponseEntity<OrderDto> getOrder(@PathVariable Long orderId) {
         try {
             OrderDto orderDto = orderService.getOrder(orderId);
@@ -40,13 +40,13 @@ public class OrderController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     public ResponseEntity<List<OrderDto>> getAllOrders() {
         List<OrderDto> orderDtos = orderService.getAllOrders();
         return ResponseEntity.ok(orderDtos);
     }
 
-    @DeleteMapping("/{orderId}")
+    @DeleteMapping("/delete/{orderId}")
     public ResponseEntity<String> deleteOrder(@PathVariable Long orderId) {
         try {
             if (orderService.checkOrderIsPaid(orderId)) {
@@ -91,7 +91,7 @@ public class OrderController {
         }
     }
 
-    @PutMapping("/{orderId}/set-paid")
+    @PutMapping("/{orderId}/setPaid")
     public ResponseEntity<String> setOrderIsPaid(@PathVariable Long orderId) {
         try {
             orderService.setOrderIsPaid(orderId);
@@ -101,7 +101,7 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/check-unpaid")
+    @GetMapping("/checkUnpaid")
     public ResponseEntity<Boolean> checkUnpaidOrder() {
         Boolean hasUnpaidOrder = orderService.checkUnpaidOrder();
         return ResponseEntity.ok(hasUnpaidOrder);
@@ -109,7 +109,7 @@ public class OrderController {
 
     @Async
     @Scheduled(fixedDelay = 5 * 60 * 1000)
-    @PostMapping("/update-not-active")
+    @PostMapping("/updateNotActive")
     public void updateOrderAsNotActive() {
         log.info("Checking");
         orderService.updateOrderAsNotActive();
