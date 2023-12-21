@@ -38,7 +38,14 @@ public class CarService {
         Optional<Car> optionalCar = carRepository.findById(carId);
         if (optionalCar.isPresent()) {
             Car existingCar = optionalCar.get();
-            carMapper.dtoToCar(carDto);
+            Car updatedCar = carMapper.dtoToCar(carDto);
+
+            existingCar.setModel(updatedCar.getModel());
+            existingCar.setBrand(updatedCar.getBrand());
+            existingCar.setManufactureYear(updatedCar.getManufactureYear());
+            existingCar.setImage(updatedCar.getImage());
+            existingCar.setPrice(updatedCar.getPrice());
+
             carRepository.save(existingCar);
         } else {
             throw new CarNotFoundException("Car with ID " + carId + " not found");

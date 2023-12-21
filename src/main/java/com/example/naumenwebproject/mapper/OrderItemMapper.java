@@ -1,6 +1,9 @@
 package com.example.naumenwebproject.mapper;
 
+import com.example.naumenwebproject.dto.CarDto;
 import com.example.naumenwebproject.dto.OrderItemDto;
+import com.example.naumenwebproject.exception.CarDtoNotFoundException;
+import com.example.naumenwebproject.exception.CarNotFoundException;
 import com.example.naumenwebproject.model.Car;
 import com.example.naumenwebproject.model.OrderItem;
 import com.example.naumenwebproject.repository.CarRepository;
@@ -34,8 +37,13 @@ public class OrderItemMapper {
         orderItem.setExpireTime(orderItemDto.getExpireTime());
         orderItem.setQuantity(orderItemDto.getQuantity());
 
+        CarDto carDto = orderItemDto.getCarDto();
+        if (carDto == null) {
+            throw new CarDtoNotFoundException("CarDto is null in OrderItemDto");
+        }
+
         Car car = carRepository.findById(orderItemDto.getCarDto().getId())
-                .orElseThrow(() -> new RuntimeException("Car not found"));
+                .orElseThrow(() -> new CarNotFoundException("Car not found"));
 
         orderItem.setCar(car);
 

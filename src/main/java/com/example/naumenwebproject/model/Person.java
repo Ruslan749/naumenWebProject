@@ -1,6 +1,5 @@
 package com.example.naumenwebproject.model;
 
-import com.example.naumenwebproject.model.Order;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,7 +35,7 @@ public class Person {
     @Column(name = "role")
     private String roles;
 
-    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "person")
     private List<Order> orders;
 
     public Person(String username, String phone) {

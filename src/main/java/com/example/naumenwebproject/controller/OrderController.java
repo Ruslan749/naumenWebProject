@@ -27,7 +27,7 @@ public class OrderController {
     @PostMapping("/create")
     public ResponseEntity<Order> createOrder() {
         orderService.createOrder();
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/get/{orderId}")
@@ -91,7 +91,7 @@ public class OrderController {
         }
     }
 
-    @PutMapping("/{orderId}/setPaid")
+    @PutMapping("/setPaid/{orderId}")
     public ResponseEntity<String> setOrderIsPaid(@PathVariable Long orderId) {
         try {
             orderService.setOrderIsPaid(orderId);

@@ -1,8 +1,9 @@
 package com.example.naumenwebproject.controller;
 
 import com.example.naumenwebproject.dto.OrderItemDto;
+import com.example.naumenwebproject.exception.CarDtoNotFoundException;
+import com.example.naumenwebproject.exception.CarNotFoundException;
 import com.example.naumenwebproject.exception.OrderItemNotFoundException;
-import com.example.naumenwebproject.model.OrderItem;
 import com.example.naumenwebproject.service.OrderItemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,8 +24,12 @@ public class OrderItemController {
 
     @PostMapping("/create")
     public ResponseEntity<OrderItemDto> createOrderItem(@RequestBody OrderItemDto orderItemDto) {
-        orderItemService.createOrderItem(orderItemDto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        try {
+            orderItemService.createOrderItem(orderItemDto);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (CarNotFoundException | CarDtoNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/delete/{carId}")
@@ -43,7 +48,7 @@ public class OrderItemController {
         return new ResponseEntity<>(orderItems, HttpStatus.OK);
     }
 
-    @GetMapping("/getOrderItem/{orderItemId}")
+    @GetMapping("/get/{orderItemId}")
     public ResponseEntity<OrderItemDto> getOrderItem(@PathVariable Long orderItemId) {
         try {
             OrderItemDto orderItemDto = orderItemService.getOrderItem(orderItemId);

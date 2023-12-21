@@ -3,7 +3,6 @@ package com.example.naumenwebproject.model;
 import lombok.Data;
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -21,7 +20,7 @@ public class Car {
     private String brand;
 
     @Column(name = "manufacture_year")
-    private LocalDate manufactureYear;
+    private Integer manufactureYear;
 
     @Column(name = "image")
     private Byte[] image;
